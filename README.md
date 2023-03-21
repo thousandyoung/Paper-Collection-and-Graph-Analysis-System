@@ -8,8 +8,8 @@ This project implements a technology intelligence retrieval system, which includ
 - [x] Manage spider tasks with multi-threading
 - [x] Implement technology intelligence information retrieval and display with Django
 - [ ] Implement technology intelligence information graph display with Relation-graph and React
-- [ ] Support discovery and display of all paths and shortest paths
-- [ ] Support K-jump query and display
+- [x] Support discovery and display of all paths and shortest paths
+- [x] Support K-jump query and display
 - [ ] Support clustering/community discovery and display
 
 ## Tech Stack
