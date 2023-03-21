@@ -39,10 +39,10 @@ class PathFinder:
 
     def get_paths(self, start_node_name, start_node_type, end_node_name, end_node_type, relationship, depth, shortest):
 
-        if (not start_node_name and start_node_type) | (start_node_name and not start_node_type):
+        if (not start_node_name and start_node_type) or (start_node_name and not start_node_type):
             raise ValueError("start_node_type and start_node_name must occur together")
 
-        if (not end_node_name and end_node_type) | (end_node_name and not end_node_type):
+        if (not end_node_name and end_node_type) or (end_node_name and not end_node_type):
             raise ValueError("end_node_type and end_node_name must occur together")
 
         if shortest is not None:
@@ -82,13 +82,13 @@ class PathFinder:
         json_converter = Neo4jToJson()
         return json_converter.path_to_json(paths=results)
 
-    def construct_find_path_query(self, start_node=None, end_node=None, relationship=None, depth_query=None, shortest=None):
-        if shortest is not None and depth_query is not None:
+    def construct_find_path_query(self, start_node="", end_node="", relationship="", depth_query="", shortest=""):
+        if shortest != "" and depth_query != "":
             raise ValueError("allshortestpaths can't be used with depth arguments")
-            
-        if start_node is not None and end_node is not None:
+
+        if start_node != "" and end_node != "":
             query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p"
-        elif start_node is not None:
+        elif start_node != "":
             query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-(n) RETURN p"
         else:
             query = f"MATCH p=(n)-[{relationship}{depth_query}]-({end_node}) RETURN p"

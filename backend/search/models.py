@@ -17,17 +17,11 @@ class Author(StructuredNode):
 
     papers = RelationshipTo('Paper', 'WROTE')
     department = RelationshipTo('Department', 'BELONGS_TO')
-
-    # def __str__(self):
-    #     return f"{self.name} ({self.department_name})"
     
 class Department(StructuredNode):
     name = StringProperty()
     
     authors = RelationshipFrom('Author', 'BELONGS_TO')
-
-    # def __str__(self):
-    #     return self.name
     
 class Keyword(StructuredNode):
     name = StringProperty()
