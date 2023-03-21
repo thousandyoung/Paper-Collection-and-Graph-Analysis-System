@@ -38,9 +38,7 @@ class Neo4jToJson:
 class PathFinder:
 
     def get_paths(self, start_node_name, start_node_type, end_node_name, end_node_type, relationship, depth, shortest):
-        if start_node_name is None and end_node_name is None:
-            return []
-
+        
         if shortest is not None:
             shortest_query = 'allshortestpaths'
         else:
