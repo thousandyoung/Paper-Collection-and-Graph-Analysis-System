@@ -1,4 +1,4 @@
-from neomodel import StructuredNode, StringProperty, DateTimeProperty, UniqueIdProperty, RelationshipTo, RelationshipFrom
+from neomodel import StructuredNode, StringProperty, DateTimeProperty, IntegerProperty, UniqueIdProperty, StructuredRel, RelationshipTo, RelationshipFrom, Relationship
 
 class Paper(StructuredNode):
     uid = UniqueIdProperty()
@@ -22,8 +22,12 @@ class Department(StructuredNode):
     name = StringProperty()
     
     authors = RelationshipFrom('Author', 'BELONGS_TO')
-    
+
+class CoOccurrence(StructuredRel):
+    weight = IntegerProperty(default=0) 
+
 class Keyword(StructuredNode):
     name = StringProperty()
     
     papers = RelationshipFrom('Paper', 'HAS_KEYWORD')
+    co_occurrence = Relationship('Keyword', 'CO_OCCURRENCE', model=CoOccurrence)

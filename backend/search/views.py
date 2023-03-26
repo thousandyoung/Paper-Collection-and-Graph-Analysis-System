@@ -27,6 +27,7 @@ def paper_list(request):
             'uid': paper.uid,
             'title': paper.title,
             'authors': [author.name for author in paper.authors.all()],
+            'keywords': [keyword.name for keyword in paper.keywords.all()],
             'published_date': paper.published_date.isoformat(),
         }
         formatted_papers.append(formatted_paper)
