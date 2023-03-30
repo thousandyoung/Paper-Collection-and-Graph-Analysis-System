@@ -1,0 +1,3 @@
+# Ignore sensitive keys in settings.py
+settings.py
+SECRET_KEY
