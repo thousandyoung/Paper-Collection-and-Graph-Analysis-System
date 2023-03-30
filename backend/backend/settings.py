@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_neomodel',
+    'corsheaders',
     'rest_framework',
     'search',
     'spider',
@@ -46,11 +47,19 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+# 允许的跨域请求来源，也可以使用通配符 *
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://*',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -86,6 +95,8 @@ DATABASES = {
 
 # if neo4j is in docker, turn localhost into your docker ip 
 config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@192.168.1.217:7687'
+# config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@172.20.10.3:7687'
+
 config.ENCRYPTED = False
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

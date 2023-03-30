@@ -37,8 +37,8 @@ class Neo4jToJson:
 
 class PathFinder:
 
-    def get_paths(self, start_node_name, start_node_type, end_node_name, end_node_type, relationship, depth, shortest):
-
+    def get_paths(self, start_node_name=None, start_node_type=None, end_node_name=None, end_node_type=None, relationship=None, depth=None, shortest=None):
+    
         if (not start_node_name and start_node_type) or (start_node_name and not start_node_type):
             raise ValueError("start_node_type and start_node_name must occur together")
 
@@ -66,7 +66,7 @@ class PathFinder:
             else:
                 start_node_query = f":{start_node_type} {{title: '{start_node_name}'}}"
         else:
-            start_node_query = None
+            start_node_query = ""
 
         if end_node_name is not None:
             if end_node_type != 'Paper':
@@ -74,22 +74,25 @@ class PathFinder:
             else:
                 end_node_query = f":{end_node_type} {{title: '{end_node_name}'}}"
         else:
-            end_node_query = None
+            end_node_query = ""
 
         query = self.construct_find_path_query(start_node_query, end_node_query, relationship_query, depth_query, shortest_query)
-
+        print(query)
         results, _ = db.cypher_query(query)
+
         json_converter = Neo4jToJson()
         return json_converter.path_to_json(paths=results)
 
     def construct_find_path_query(self, start_node="", end_node="", relationship="", depth_query="", shortest=""):
         if shortest != "" and depth_query != "":
             raise ValueError("allshortestpaths can't be used with depth arguments")
-
-        if start_node != "" and end_node != "":
+        
+        if start_node is not None and start_node != "" and end_node is not None and end_node != "":
             query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p"
-        elif start_node != "":
+        elif start_node is not None and start_node != "":
             query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-(n) RETURN p"
-        else:
+        elif end_node is not None and end_node != "":
             query = f"MATCH p=(n)-[{relationship}{depth_query}]-({end_node}) RETURN p"
+        else:
+            query = "MATCH p=()-[]-() RETURN p"
         return query
