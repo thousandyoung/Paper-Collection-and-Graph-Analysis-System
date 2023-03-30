@@ -1,3 +1,2 @@
 # Ignore sensitive keys in settings.py
-# backend/backend/settings.py
-# SECRET_KEY
+.env
