@@ -47,6 +47,7 @@ class SpiderThread(threading.Thread):
                 self.driver.find_element(By.ID,'txt_search').clear()
                 self.driver.find_element(By.ID,'txt_search').send_keys(KEYWORD,Keys.ENTER)
 
+            current_paper_count = 0
             for current_page in range (1, TOTAL_PAGES+1):
                 try:
                     print(f'{self.spider.name}{KEYWORD} : 正在读取第{current_page}页!')
@@ -59,6 +60,8 @@ class SpiderThread(threading.Thread):
                     print('trlen:', len(tr_list))
 
                     for tr in tqdm(tr_list):
+                        current_paper_count += 1
+
                         item = {}
                         # 抓取标题
                         try:
@@ -108,30 +111,45 @@ class SpiderThread(threading.Thread):
                             keywords_list = ["无关键词"]
                         item['keywords_list'] = keywords_list
 
-                        
-
-                        
                         wx_tit_element = self.driver.find_element(By.CLASS_NAME, 'wx-tit')
                         #抓取作者
                         try:
-                            author_element = wx_tit_element.find_element(By.XPATH, './h3[1]')
-                            author_elements_list = author_element.find_elements(By.TAG_NAME,'a')
+                            author_element = wx_tit_element.find_elements(By.XPATH, './h3[1]')
+                            if author_element:
+                                author_element = author_element[0]
+                                author_elements_list = author_element.find_elements(By.TAG_NAME,'a')
+                                author_names_list = []
+                                for element in author_elements_list:
+                                    author_names_list.append(element.text)
+                            else:
+                                print("grab author failed:")
+                                author_names_list = []
+                        except Exception as e:
+                            print("grab author failed:", e)
+                            print("website:", link)#非中文期刊/标准/专利
                             author_names_list = []
-                            for element in author_elements_list:
-                                author_names_list.append(element.text)
-                        except:
-                            print("grab author failed")
 
                         #抓取作者从属机构
                         try:
-                            department_element = wx_tit_element.find_element(By.XPATH, './h3[2]')
-                            department_elements_list = department_element.find_elements(By.TAG_NAME, 'a')
+                            department_element = wx_tit_element.find_elements(By.XPATH, './h3[2]')
+                            if department_element:
+                                department_element = department_element[0]
+                                department_elements_list = department_element.find_elements(By.TAG_NAME, 'a')
+                                department_names_list = []
+                                for element in department_elements_list:
+                                    department_names_list.append(element.text)
+                            else:
+                                print("grab department_element failed:")
+                                department_names_list = []  # 如果为空，将其设置为一个空列表
                         except:
                             print("grap department failed")
-                        department_names_list = []
-                        for element in department_elements_list:
-                            department_names_list.append(element.text)
+                            department_names_list = []  # 如果为空，将其设置为一个空列表
 
+                        # 如果列表为空，打印错误消息，否则执行相应逻辑
+                        if not department_names_list:
+                            print("department_names_list is empty!")
+                        if not author_names_list:
+                            print("author_names_list is empty!")
                         #生成author-department的dict
                         author_department_dict = {}
                         # 去除非法字符
@@ -166,6 +184,9 @@ class SpiderThread(threading.Thread):
 
                         SwitchToSearchResultWindow(self.driver,search_results_window_handle)
                         print('back',len(self.driver.window_handles))
+                        with transaction.atomic():
+                            self.spider.progress = int((current_paper_count / (TOTAL_PAGES*len(tr_list))) * 100)
+                            self.spider.save()
 
                     # check if the spider is stopped
                     if self.stopped():
@@ -173,8 +194,6 @@ class SpiderThread(threading.Thread):
                     #本页抓取完毕，点击下一页
                     with transaction.atomic():
                         self.spider.current_page = current_page
-                        self.spider.progress = int(current_page / TOTAL_PAGES * 100)
-                        print(f'{self.spider.name} progress : {self.spider.progress}')
                         self.spider.save()
                     if HasNextPage(self.driver) == True:
                         self.driver.find_element(By.ID, 'PageNext').click()

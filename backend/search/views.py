@@ -9,6 +9,7 @@ import json
 
 from .models import *
 from .search_helpers.path_helper import *
+from .search_helpers.communities_helper import*
 
 @api_view(['GET'])
 def paper_list(request):
@@ -96,13 +97,25 @@ def get_all_paths(request):
             depth=depth,
             shortest=shortest
         )
-        print(paths)
         return Response({'paths': paths, 'message': 'success'}, status=status.HTTP_200_OK)
 
 
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def get_keyword_author_commonities(request):
+    try:
+        communities = find_communities()
+       
+        return Response({
+            'keyword_communities': communities['keyword_communities'],
+            'author_communities':communities['author_communities'],
+             'message': 'success'}, status=status.HTTP_200_OK)
+
+
+    except Exception as e:
+        return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def get_node_types(request):

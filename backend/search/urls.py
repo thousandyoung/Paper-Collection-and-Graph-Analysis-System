@@ -7,4 +7,5 @@ urlpatterns = [
     path('get_all_paths/', views.get_all_paths),
     path('get_node_types/', views.get_node_types),
     path('get_relationship_types/', views.get_relationship_types),
+    path('get_keyword_author_commonities/', views.get_keyword_author_commonities)
 ]

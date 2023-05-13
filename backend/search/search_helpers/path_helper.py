@@ -88,11 +88,8 @@ class PathFinder:
             raise ValueError("allshortestpaths can't be used with depth arguments")
         
         if start_node is not None and start_node != "" and end_node is not None and end_node != "":
-            query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p"
-        elif start_node is not None and start_node != "":
-            query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-(n) RETURN p"
-        elif end_node is not None and end_node != "":
-            query = f"MATCH p=(n)-[{relationship}{depth_query}]-({end_node}) RETURN p"
-        else:
-            query = "MATCH p=()-[]-() RETURN p"
+            query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p LIMIT 2000"
+        else :
+            query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-({end_node}) RETURN p LIMIT 2000"
         return query
+    
