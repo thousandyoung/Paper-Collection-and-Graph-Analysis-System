@@ -84,12 +84,13 @@ class PathFinder:
         return json_converter.path_to_json(paths=results)
 
     def construct_find_path_query(self, start_node="", end_node="", relationship="", depth_query="", shortest=""):
-        if shortest != "" and depth_query != "":
+        if shortest == True and depth_query != "":
             raise ValueError("allshortestpaths can't be used with depth arguments")
-        
+
         if start_node is not None and start_node != "" and end_node is not None and end_node != "":
             query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p LIMIT 2000"
-        else :
+        else:
             query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-({end_node}) RETURN p LIMIT 2000"
+
         return query
     
