@@ -15,20 +15,7 @@ def find_communities():
     keyword_id_name_map = {}
     for keyword in keywords:
         keyword_id_name_map[keyword.id] = keyword.name
-
-    # 创建关键字共现矩阵
-    cooccurrence_matrix = {}
-    for keyword1 in keywords:
-        query = f'MATCH (k1:Keyword)-[r:CO_OCCURRENCE]->(k2:Keyword) WHERE ID(k1)={keyword1.id} RETURN k2, r.weight'
-        result, _ = db.cypher_query(query)
-        for row in result:
-            keyword2_id = row[0].id
-            weight = row[1]
-            if keyword2_id not in cooccurrence_matrix:
-                cooccurrence_matrix[keyword2_id] = {}
-            cooccurrence_matrix[keyword2_id][keyword1.id] = weight
             
-
     # 创建一个无向图
     graph = nx.Graph()
     for keyword in keywords:
