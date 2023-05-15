@@ -45,7 +45,7 @@ class PathFinder:
         if (not end_node_name and end_node_type) or (end_node_name and not end_node_type):
             raise ValueError("end_node_type and end_node_name must occur together")
 
-        if shortest is not None:
+        if shortest == True:
             shortest_query = 'allshortestpaths'
         else:
             shortest_query = ""
