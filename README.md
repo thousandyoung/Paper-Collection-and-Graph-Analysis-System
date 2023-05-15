@@ -51,6 +51,6 @@ python manage.py migrate
 
 
 ## UI Preview
-![papers][img/papers.png]
-![KG][img/KG.png]
-![spider][img/spider.png]
+![papers](img/papers.jpg)
+![KG](img/KG.jpg)
+![spider](img/spider.jpg)
