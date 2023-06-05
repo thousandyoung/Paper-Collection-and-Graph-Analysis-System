@@ -50,11 +50,6 @@ class PathFinder:
         else:
             shortest_query = ""
 
-        if depth is not None:
-            depth_query = f"..{depth}"
-        else:
-            depth_query = ""
-
         if relationship is not None:
             relationship_query = f":{relationship}"
         else:
@@ -75,6 +70,15 @@ class PathFinder:
                 end_node_query = f":{end_node_type} {{title: '{end_node_name}'}}"
         else:
             end_node_query = ""
+        
+        if depth is not None:
+            depth_query = f"..{depth}"
+        else:
+            # 针对展示所有路径的情况进行优化
+            if start_node_query == "" and end_node_query == "":
+                depth_query = "..1"
+            else:
+                depth_query = ""
 
         query = self.construct_find_path_query(start_node_query, end_node_query, relationship_query, depth_query, shortest_query)
         print(query)
@@ -88,9 +92,9 @@ class PathFinder:
             raise ValueError("allshortestpaths can't be used with depth arguments")
 
         if start_node is not None and start_node != "" and end_node is not None and end_node != "":
-            query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN p LIMIT 2000"
+            query = f"MATCH p={shortest}(({start_node})-[{relationship}{depth_query}]-({end_node})) RETURN DISTINCT p LIMIT 1000"
         else:
-            query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-({end_node}) RETURN p LIMIT 2000"
+            query = f"MATCH p=({start_node})-[{relationship}{depth_query}]-({end_node}) RETURN DISTINCT p LIMIT 1000"
 
         return query
     

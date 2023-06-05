@@ -107,12 +107,11 @@ def get_all_paths(request):
 def get_keyword_author_commonities(request):
     try:
         communities = find_communities()
-       
+    
         return Response({
             'keyword_communities': communities['keyword_communities'],
             'author_communities':communities['author_communities'],
              'message': 'success'}, status=status.HTTP_200_OK)
-
 
     except Exception as e:
         return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
