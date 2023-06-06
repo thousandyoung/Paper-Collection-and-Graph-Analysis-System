@@ -56,7 +56,7 @@ function KnowledgeGraph({ paths }) {
     return () => chart.dispose();
   }, [paths]);
 
-  return <div ref={chartRef} style={{ height: '80vh' }}></div>;
+  return <div ref={chartRef} style={{ height: '90vh' , width: '100%' }}></div>;
 }
 
 export default KnowledgeGraph;

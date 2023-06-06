@@ -87,7 +87,8 @@ def get_all_paths(request):
 
         depth = request.data.get('depth', None)
         shortest = request.data.get('shortest', None)
-        path_finder = PathFinder()
+        # path_finder = PathFinder()
+        path_finder = OptimizedPathFinder()
         paths = path_finder.get_paths(
             start_node_name=start_node_name, 
             start_node_type=start_node_type, 
