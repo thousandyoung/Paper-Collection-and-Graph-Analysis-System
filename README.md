@@ -4,6 +4,7 @@ This project implements a technology intelligence retrieval system.
 
 ## Features
 
+- [x] Improved performance of Cypher via APOC
 - [x] Automatically crawl technology intelligence information with spiders
 - [x] Manage spider tasks with multi-threading
 - [x] Implement technology intelligence information retrieval and display with Django
