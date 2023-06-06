@@ -97,8 +97,8 @@ DATABASES = {
 }
 
 # if neo4j is in docker, turn localhost into your docker ip 
-config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@192.168.1.217:7687'
-# config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@172.20.10.3:7687'
+# config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@192.168.1.217:7687'
+config.DATABASE_URL = 'bolt://neo4j:aaaaaaaa@172.20.10.3:7687'
 
 config.ENCRYPTED = False
 # Password validation

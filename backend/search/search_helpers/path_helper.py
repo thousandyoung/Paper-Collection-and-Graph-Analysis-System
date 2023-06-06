@@ -143,7 +143,7 @@ class PathFinder:
         end_time = time.time()
         execution_time = end_time - start_time  
         print("执行时间：", execution_time, "秒")
-        # print(results)
+        print(results)
         
         json_converter = Neo4jToJson()
         return json_converter.path_to_json(paths=results)
@@ -240,7 +240,7 @@ class OptimizedPathFinder:
                                 MATCH (end_node{end_node})
                                 CALL apoc.algo.allSimplePaths(start_node,
                                     end_node,
-                                    "",
+                                    '',
                                     500
                                 )
                                 YIELD path
@@ -249,15 +249,14 @@ class OptimizedPathFinder:
                     
             else:
                 #最短路径只在有起始节点和终止节点的情况下有意义
-                query = f"""MATCH (start_node{start_node})
-                            MATCH (end_node{end_node})
-                            CALL apoc.algo.shortestPath(start_node,
-                                ,end_node
-                                ,relationshipFilter: "{relationship}>"
-                            )
-                            YIELD path
-                            RETURN path;
-                        """
+                # query = f"""MATCH (start_node{start_node})
+                #             MATCH (end_node{end_node})
+                #             CALL apoc.algo.shortestPath(start_node,end_node,null)
+                #             YIELD path
+                #             RETURN path;
+                #         """
+                # print(query)
+                query = f"MATCH p=allshortestpaths(({start_node})-[]-({end_node})) RETURN DISTINCT p LIMIT 2000"
         elif start_node != "":
             if relationship != "":
                 #情况2
