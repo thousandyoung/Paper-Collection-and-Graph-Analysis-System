@@ -28,6 +28,7 @@ This project implements a technology intelligence retrieval system.
 ### Backend
 
 - Install and start the Neo4j database
+- APOC can be installed by moving the APOC jar file from the $NEO4J_HOME/labs directory to the $NEO4J_HOME/plugins directory and restarting Neo4j.
 - Navigate to the `backend` directory in the terminal and execute the following command to install Python dependencies: 
     ```pip install -r requirements.txt```
 - Create a new database in the Neo4j database

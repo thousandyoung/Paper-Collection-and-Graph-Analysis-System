@@ -1,5 +1,5 @@
 from neomodel import db
-import time, string, ast
+import time
 
 class Neo4jToJson:    
     def content_to_json(self, content):

@@ -216,12 +216,16 @@ class SpiderThread(threading.Thread):
             with transaction.atomic():
                 self.spider.status = "COMPLETED"
                 self.spider.save()
-            #存入数据库
+            #存入数据库 
             csv_filename = './Data/{keyword}.csv'.format(keyword = self.spider.keyword)
             import_data_from(csv_path=csv_filename)
         finally:
             self.driver.quit()
             f.close()
+            with transaction.atomic():
+                self.spider.end_time = datetime.now()
+                self.spider.calculate_execution_time()
+                self.spider.save()
 
     def stop(self):
         self._stop_event.set()

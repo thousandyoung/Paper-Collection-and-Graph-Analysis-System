@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from django.core.paginator import Paginator
 from rest_framework import status
+import time
 import json
 
 from .models import *
@@ -19,10 +20,14 @@ def paper_list(request):
 
     print('page:', page_number)
     print('pagesize:', page_size)
+    start_time = time.time()
     if not keyword:
         papers = Paper.nodes.order_by('-crawl_time')
     else:
         papers = Paper.nodes.filter(Q(title__icontains=keyword) | Q(abstract__icontains=keyword)).order_by('-crawl_time')
+    end_time = time.time()
+    execution_time = end_time - start_time  
+    print("执行时间：", execution_time, "秒")
     paginator = Paginator(papers, page_size)
     page_obj = paginator.get_page(page_number)
     papers_on_page = page_obj.object_list
@@ -53,7 +58,11 @@ def paper_detail(request):
     # 获取论文id
     uid = request.GET.get('uid')
     # 查询neo4j数据库中的论文详细信息
+    start_time = time.time()
     paper = Paper.nodes.get(uid=uid)
+    end_time = time.time()
+    execution_time = end_time - start_time  
+    print("执行时间：", execution_time, "秒")
 
     if paper is None:
         return JsonResponse({'error': 'Paper not found'}, status=404)
@@ -107,8 +116,11 @@ def get_all_paths(request):
 @api_view(['GET'])
 def get_keyword_author_commonities(request):
     try:
+        start_time = time.time()
         communities = find_communities()
-    
+        end_time = time.time()
+        execution_time = end_time - start_time  
+        print("执行时间：", execution_time, "秒")        
         return Response({
             'keyword_communities': communities['keyword_communities'],
             'author_communities':communities['author_communities'],
