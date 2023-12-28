@@ -1,4 +1,4 @@
-# Technology Intelligence Retrieval System
+# Paper Collection and Graph Analysis System
 
 This project implements a technology intelligence retrieval system.
 
