@@ -56,3 +56,14 @@ python manage.py migrate
 ![KG](img/KG.jpg)
 ![papers](img/papers.jpg)
 ![spider](img/spider.jpg)
+
+## Appendix
+### APOC Optimization Results
+![APOC Optimization Results](img/apoc.jpg)
+
+### Community Discovery Performance Table
+![Community Discovery Performance Table](img/cdpt.jpg)
+
+### Flowchart
+![Flowchart 1](img/fc1.jpg)
+![Flowchart 2](img/fc2.jpg)
