@@ -18,11 +18,6 @@ This project implements a technology intelligence retrieval system.
 - Backend: Neo4j and Django
 - Frontend: ECharts and React
 
-## References
-- Neo4j: https://neo4j.com/docs/
-- Practice of Selenium Multi-threading: https://cloud.tencent.com/developer/article/1667332
-
-
 ## Installation and Usage
 
 ### Backend
